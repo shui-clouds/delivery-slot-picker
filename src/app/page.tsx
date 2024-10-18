@@ -1,101 +1,61 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState } from "react";
+import EmblaCarousel from "./EmblaCarousel";
+import { Field, Label, Radio, RadioGroup } from "@headlessui/react";
+
+import "./embla.css";
+
+const groupSize = [
+  { name: "Groups of 2", value: '50%', slidesToScroll: 2 },
+  { name: "Groups of 3", value: '33%', slidesToScroll: 3 },
+  { name: "Groups of 4", value: '25%', slidesToScroll: 4},
+];
+const data = [
+  { id: 1, name: "John", age: 30, city: "New York" },
+  { id: 2, name: "Joe", age: 40, city: "Los Angeles" },
+  { id: 3, name: "Jane", age: 50, city: "Chicago" },
+  { id: 4, name: "Bob", age: 60, city: "Houston" },
+  { id: 5, name: "Joe", age: 40, city: "Los Angeles" },
+  { id: 6, name: "Jane", age: 50, city: "Chicago" },
+  { id: 7, name: "Bob", age: 60, city: "Houston" },
+  { id: 8, name: "Bob2", age: 60, city: "Houston" },
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [selectedGroupSize, setSelectedGroupSize] = useState(groupSize[0]);
+  console.dir(selectedGroupSize.name);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  return (
+    <main>
+      <RadioGroup
+        value={selectedGroupSize}
+        onChange={setSelectedGroupSize}
+        aria-label="Server size"
+      >
+        {groupSize.map((plan) => (
+          <Field
+            key={plan.name}
+            disabled={!plan.value}
+            className="flex items-center gap-2"
           >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+            <Radio
+              value={plan}
+              className="group flex size-5 items-center justify-center rounded-full border bg-white data-[checked]:bg-blue-400 data-[disabled]:bg-gray-100"
+            >
+              <span className="invisible size-2 rounded-full bg-white group-data-[checked]:visible" />
+            </Radio>
+            <Label className="data-[disabled]:opacity-50">{plan.name}</Label>
+          </Field>
+        ))}
+      </RadioGroup>
+      <div className="my-14" style={{ "--slide-size": selectedGroupSize.value }}>
+        <EmblaCarousel
+          slides={data}
+          options={{ slidesToScroll: selectedGroupSize.slidesToScroll }}
+          aria-label="Delivery slot picker"
+        />
+      </div>
+    </main>
   );
 }
