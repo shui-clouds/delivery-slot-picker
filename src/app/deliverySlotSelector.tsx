@@ -6,7 +6,7 @@ import { Radio, RadioGroup } from "@headlessui/react";
 import "./embla.css";
 import { DateSlots } from "../../types";
 
-function classNames(...classes) {
+function classNames(...classes: (string | boolean | undefined)[]): string {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -72,9 +72,9 @@ export default function DeliverySlotSelector({
                     }
                     className={classNames(
                       slot.status === "available"
-                        ? "cursor-pointer focus:outline-none ring-1"
-                        : "cursor-not-allowed opacity-100 bg-gray-200 hover:bg-gray-200 text-zinc-400 ring-0",
-                      "my-2 flex items-center justify-center rounded-md bg-white px-3 py-3 text-sm font-semibold ring-gray-300 hover:bg-gray-50 data-[checked]:bg-emerald-600 data-[checked]:text-white data-[checked]:ring-0 data-[focus]:data-[checked]:ring-2 data-[focus]:ring-2 data-[focus]:ring-emerald-600 data-[focus]:ring-offset-2 data-[checked]:hover:bg-emerald-500 sm:flex-1 [&:not([data-focus],[data-checked])]:ring-inset"
+                        ? "cursor-pointer focus:outline-none hover:bg-gray-50 ring-1 ring-gray-300 bg-white  data-[checked]:bg-emerald-600 data-[checked]:text-white data-[checked]:ring-0 data-[focus]:data-[checked]:ring-2 data-[focus]:ring-2 data-[focus]:ring-emerald-600 data-[focus]:ring-offset-2 data-[checked]:hover:bg-emerald-500 sm:flex-1 [&:not([data-focus],[data-checked])]:ring-inset"
+                        : "cursor-not-allowed opacity-70 bg-gray-200 text-zinc-400",
+                      "my-2 flex items-center justify-center rounded-md px-3 py-3 text-sm font-semibold"
                     )}
                   >
                     {slot.timeslot}{" "}
