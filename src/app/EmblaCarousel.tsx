@@ -1,40 +1,46 @@
-import React from 'react'
-import { EmblaOptionsType } from 'embla-carousel'
-import { DotButton, useDotButton } from './EmblaCarouselDotButton'
+import { EmblaOptionsType } from "embla-carousel";
+import { DotButton, useDotButton } from "./EmblaCarouselDotButton";
+
 import {
   PrevButton,
   NextButton,
-  usePrevNextButtons
-} from './EmblaCarouselArrowButtons'
-import useEmblaCarousel from 'embla-carousel-react'
+  usePrevNextButtons,
+} from "./EmblaCarouselArrowButtons";
+import useEmblaCarousel from "embla-carousel-react";
+import { Key, ReactElement } from "react";
 
-type PropType = {
-  // todo: define type
-  slides: any[]
-  options?: EmblaOptionsType
-}
-
-const EmblaCarousel: React.FC<PropType> = (props) => {
-  const { slides, options } = props
-  const [emblaRef, emblaApi] = useEmblaCarousel(options)
+const EmblaCarousel = ({
+  children,
+  options,
+}: {
+  children: ReactElement<{ key: Key }>[];
+  options?: EmblaOptionsType;
+}) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel(options);
 
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
-    useDotButton(emblaApi)
+    useDotButton(emblaApi);
 
   const {
     prevBtnDisabled,
     nextBtnDisabled,
     onPrevButtonClick,
-    onNextButtonClick
-  } = usePrevNextButtons(emblaApi)
+    onNextButtonClick,
+  } = usePrevNextButtons(emblaApi);
+
+  const size = options?.slidesToScroll
+    ? `${(1 / Number(options?.slidesToScroll)) * 100}%`
+    : "33%";
 
   return (
-    <section className="embla">
+    <section className="embla" style={{ "--slide-size": size }}>
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
-          {slides.map((data) => (
-            <div className="embla__slide" key={data.id}>
-              <div className="embla__slide__number">{data.name}</div>
+          {children.map((child) => (
+            <div key={child.key} className="embla__slide">
+              <div className="embla__slide__number">
+                <div>{child}</div>
+              </div>
             </div>
           ))}
         </div>
@@ -51,15 +57,15 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
             <DotButton
               key={index}
               onClick={() => onDotButtonClick(index)}
-              className={'embla__dot'.concat(
-                index === selectedIndex ? ' embla__dot--selected' : ''
+              className={"embla__dot".concat(
+                index === selectedIndex ? " embla__dot--selected" : ""
               )}
             />
           ))}
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default EmblaCarousel
+export default EmblaCarousel;
