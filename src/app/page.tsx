@@ -5,8 +5,6 @@ import DeliverySlotSelector from "./deliverySlotSelector";
 import { addDays, addWeeks, isFriday, isSunday, isWednesday, startOfDay } from "date-fns";
 import { DateSlots, Slot } from "../../types";
 
-faker.seed(0);
-
 const FRIDAY_COUNTER_START_DATE = new Date("2020-01-03");
 function generateDaysOfSlots(
   includesPCParts: boolean,
@@ -23,6 +21,9 @@ function generateDaysOfSlots(
 
   const endDate = addWeeks(startDate, numberOfWeeks);
   const result: DateSlots[] = [];
+
+  // keep randomness i.e. full/available slots the same throughout page reloads
+  faker.seed(2)
 
   for (let currentDate = startDate; currentDate <= endDate; currentDate = addDays(currentDate, 1)) {
     if (isSunday(currentDate)) continue;
